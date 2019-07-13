@@ -21,15 +21,15 @@ my $sqn = sqrt($n); #calculam radacina patrata din n
 
 for(my $i = 2; $i <= $sqn && $result == -1; $i++){ #iteram pana al sqrt din n
 
-	if($n % $i == 0){ #daca gasim un divizor 
-		
+	if($n % $i == 0){ #daca gasim un divizor
+
 		if($i * $i != $n){ #si patratul sau nu e n
-			
+
 			push @divs, $n/$i; #ii adaugam perechea in divs
 
 		}
 
-		$k--; #scadem 1 din k 
+		$k--; #scadem 1 din k
 		if($k == 0){ #daca k = 0 inseamna ca rezultatul este divizorul curent
 			$result = $i;
 
