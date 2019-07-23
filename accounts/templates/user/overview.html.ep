@@ -1,0 +1,7 @@
+<p>Welcome </p>
+
+%= form_for 'do_logout' => ( method => 'POST' ) => begin
+
+  %= submit_button 'Log out', class => 'btn'
+
+% end

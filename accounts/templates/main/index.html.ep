@@ -1,0 +1,8 @@
+<h2>accounts</h2>
+<p>Welcome to accounts!</p>
+<hr>
+<p>
+
+  %= link_to Login => 'login_form'
+
+</p>
