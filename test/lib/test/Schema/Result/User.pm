@@ -13,19 +13,19 @@ __PACKAGE__->add_columns(
          is_auto_increment => 1,
      },
 
-     'username' => {
-         data_type => 'text',
+     'user' => {
+         data_type => 'char',
          is_nullable => 0,
+         size => 31,
      },
 
      'password' => {
          data_type => 'text',
          is_nullable => 0,
+         size => 50,
      },
 
  );
 
  # Tell DBIC that 'id' is the primary key
  __PACKAGE__->set_primary_key('id');
-
- 1;

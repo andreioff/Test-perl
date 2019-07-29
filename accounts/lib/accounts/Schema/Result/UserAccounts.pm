@@ -1,8 +1,8 @@
-package accounts::Schema::Result::User;
+package accounts::Schema::Result::UserAccounts;
 use base qw/DBIx::Class::Core/;
 
 # Associated table in database
-__PACKAGE__->table('users');
+__PACKAGE__->table('usersaccounts');
 
 # Column definition
 __PACKAGE__->add_columns(
@@ -18,9 +18,16 @@ __PACKAGE__->add_columns(
          is_nullable => 0,
      },
 
-     'password' => {
+     'accountusername' => {
          data_type => 'text',
          is_nullable => 0,
+     },
+
+     'accounttype' => {
+
+	data_type => 'text',
+	is_nullable => 0,	
+
      },
 
  );

@@ -1,21 +1,26 @@
-package accounts::Login;
+package accounts::Controller::Login;
 use Mojo::Base 'Mojolicious::Controller';
+use DBIx::Class;
+use accounts::Schema;
+use DBIx::Class::ResultClass::HashRefInflator;
+
+my $connection = accounts::Schema->connect("dbi:Pg:dbname=accounts;host=localhost", "postgres", "postgres", {AutoCommit => 1});
+my $users = $connection->resultset("User");
 
 sub user_exists {
 
-  my $self = shift;
-
-  my $result = $self->datab->resultset("User")->userAndPass();
+  my $result = $users->userAndPass();
+  $result->result_class('DBIx::Class::ResultClass::HashRefInflator');
 
   my($username, $password) = @_;
 
   $password = crypt($password, substr($password, 0, 2));
 
-  while( my $row = $result->fetchrow_hashref() ){
+  while(my $row = $result->next){
 
-    if($row->{'username'} eq $username){
+    if($username eq $row->{'username'}){
 
-      if($row->{'password'} eq $password){
+      if($password eq $row->{'password'}){
 
         return 1;
 
@@ -46,7 +51,7 @@ sub on_user_login {
 
     $self->render(
 
-      inline => inline => "<p>Wrong username/password! <a href='/login'>Go back to login page.</a></p>",
+      inline => "<p>Wrong username/password! <a href='/login'>Go back to login page.</a></p>",
       status => 403
 
     );

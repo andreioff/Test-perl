@@ -1,6 +1,6 @@
 package accounts;
 use Mojo::Base 'Mojolicious';
-use Schema;
+use accounts::Schema;
 use DBIx::Class;
 
 # This method will run once at server start
@@ -14,11 +14,6 @@ sub startup {
   $self->app->sessions->cookie_name('accounts');
   $self->app->sessions->default_expiration('600');
 
-  my $connection = Schema->connect('dbi:Pg:dbname=accounts;host=127.0.0.1', 'postgres', 'postgres', {AutoCommit => 1});
-  $connection->deploy();
-
-  $self->helper(datab => sub { return $connection; });
-
   # Router
   my $r = $self->routes;
 
@@ -28,8 +23,14 @@ sub startup {
   $r->get('/login')->name('login_form')->to(template => 'login/login_form');
   $r->post('/login')->name('do_login')->to('Login#on_user_login');
 
+  $r->get('/register')->name('register_form')->to(template => 'register/register_form');
+  $r->post('/register')->name('do_register')->to('Register#createUser');
+
   my $authorized = $r->under('/user')->to('Login#is_logged_in');
-  $authorized->get('/')->name('restricted_area')->to(template => 'user/overview');
+  $authorized->get('/')->name('restricted_area')->to('UserOverview#showAccounts');
+  $authorized->post('/')->name('add_account')->to('UserOverview#addAccount');
+  $authorized->get('/:id')->name('delete_account')->to('UserOverview#deleteAccount');
+
 
   $r->route('/logout')->name('do_logout')->to(cb => sub{
 

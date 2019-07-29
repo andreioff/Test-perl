@@ -1,7 +1,70 @@
-<p>Welcome </p>
+<!DOCTYPE html>
+<html>
 
-%= form_for 'do_logout' => ( method => 'POST' ) => begin
+  <h3>Welcome!</h3>
+  <hr>
+
+  <% my $accounts = stash 'accounts';
+
+  if(!@$accounts){ %>
+
+    <h3>You don't have any account added yet!<h3>
+
+  <% }else{ %>
+
+    <h3> Your accounts: </h3>
+    <% for my $account (@$accounts) {
+
+       my $deleteLink = "/user/".$account->id;
+
+    %>
+
+      <p> <%= $account->accountusername; %> -> <%= $account->accounttype; %> <a href=<%= $deleteLink %> >Delete</a> </p>
+
+  <% }
+
+    } %>
+
+    <hr>
+    <h3> Add an account </h3>
+    %= form_for 'add_account' => ( method => 'POST' ) => begin
+    %= label_for accountUsername => 'Account username'
+    %= text_field 'accountUsername'
+    <br><br>
+    %= label_for accountType => 'Account type'
+    %= select_field accountType => ['infoarena', 'codeforces', 'csacademy', 'atcoder']
+    <br><br>
+    %= submit_button 'Add account', class => 'btn'
+
+    <% my $succes = stash 'succes';
+
+
+     if($succes){
+
+       if($succes == 1){ %>
+
+         <p>Account added successfully!</p>
+
+    <% }elsif($succes == 2){ %>
+
+          <p>We could not add your account. Please try again!</p>
+
+    <% }elsif($succes == 3){ %>
+
+          <p>Account username already exists!</p>
+
+    <% }
+
+    }%>
+
+  % end
+
+  <br><hr><br>
+
+  %= form_for 'do_logout' => ( method => 'POST' ) => begin
 
   %= submit_button 'Log out', class => 'btn'
 
-% end
+  % end
+  
+</html>

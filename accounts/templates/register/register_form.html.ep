@@ -1,0 +1,13 @@
+%= form_for 'do_register' => ( method => 'POST' ) => begin
+  %= label_for username => 'Username'
+  %= text_field 'username'
+  <br><br>
+  %= label_for password => 'Password'
+  %= password_field 'password'
+  <br><br>
+  %= label_for rPassword => 'Repeat password'
+  %= password_field 'rpassword'
+  <br><br>
+  %= submit_button 'Register', class => 'btn'
+
+% end
